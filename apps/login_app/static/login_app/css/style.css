@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0px;
+}
+
+.home {
+    margin-left: 20px;
+    margin-bottom: 0;
+}
+
+.topbar {
+    border-bottom-width: 3px !important;
+    padding-bottom: 0 !important;
+}
+
+header p {
+    font-size: 1.2rem;
+}
+
+.welcome {
+    background-color: rgb(231, 231, 231);
+    border: solid 3px rgb(163, 163, 163);
+    border-radius: 5px;
+}
+
+.start {
+    box-shadow: 6px 4px black; 
+    border: 2px solid black;
+    padding: 2px 8px;
+    border-radius: 2px;
+}
+
+.logout {
+    margin-right: 20px;
+    margin-bottom: 0;
+}
+
+.info {
+    min-width: 126px;
+}
+
+
+input[type='submit'] {
+    display: block;
+    margin-top: 5px;
+}
+
+.time {
+    font-size: .9rem;
+}

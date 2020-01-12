@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'login_app/css/style.css' %}">
+    <title>User Information</title>
+</head>
+<body>
+    <header class="p-2 border-bottom border-primary topbar">
+        <h3 class="d-inline-block ml-4">Test App</h3>
+        <!-- Whatever the page the user is on this page make the link bold -->
+        <p class="d-inline-block home"><a href="/whichDash">Dashboard</a></p>
+        <p class="d-inline-block home"><a href="/users/edit">Profile</a></p>
+        <p class="float-right logout"><a href="/logout">Log off</a></p>
+    </header>
+    <div class="container">
+        <div class="row mt-2">
+            <div class="col">
+                <h4 class="font-weight-bold">{{user.first_name}} {{user.last_name}}</h4>
+                <p class="d-inline-block info mb-0">Registered at:</p><p class="d-inline-block mb-0">{{user.created_at.date}}</p>                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p class="d-inline-block info mb-0">User ID:</p><p class="d-inline-block mb-0">#{{user.id}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p class="d-inline-block info mb-0">Email address:</p><p class="d-inline-block mb-0">{{user.email}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p class="d-inline-block info">Description:</p><p class="d-inline-block">{{user.description}}</p>                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-3">
+                <h5 class="font-weight-bold">Leave a message for {{user.first_name}}</h5>
+                <form action="/createPost/{{user.id}}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group mb-1">
+                        <textarea name="message" id="" cols="30" rows="2" class="w-100 form-control"></textarea>
+                    </div>
+                    <input type="submit" value="Post" class="btn btn-success float-right start mr-2 mb-2 mt-0">
+                </form>
+            </div>
+        </div>
+
+
+        {% for message in messages reversed %}
+        <div class="row">
+            <div class="col">
+                <div class="row pl-2">
+                    <div class="col">
+                        <p class="mb-0"><a href="/users/show/{{message.author.id}}">{{message.author.first_name.title}} {{message.author.last_name.title}}</a> wrote:</p>
+                    </div>
+                    <div class="col text-right">
+                        <p class="font-italic font-weight-lighter mb-0 time">{{message.time_posted}}</p>
+                    </div>
+                </div>
+                <div class="row pl-2">
+                    <div class="col">
+                        <p class="border p-1">{{message.content}}</p>
+                    </div>
+                </div>
+                    <!-- comments start here -->
+                    {% for comment in message.post_comments.all %}
+                    <div class="row pl-4">
+                        <div class="col">
+                            <p class="mb-0"><a href="/users/show/{{comment.user.id}}">{{comment.user.first_name.title}} {{comment.user.last_name.title}}</a> wrote:</p>
+                        </div>
+                        <div class="col text-right">
+                            <p class="mb-0 font-italic font-weight-lighter time">{{comment.time_posted}}</p>
+                        </div>
+                    </div>
+                    <div class="row pl-4">
+                        <div class="col">
+                            <p class="pl-1 border">{{comment.content}}</p>        
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="row pl-4">
+                        <div class="col">
+                            <form action="/createComment/{{message.id}}" method="post">
+                                {% csrf_token %}
+                                <div class="form-group mb-1">
+                                    <textarea name="message" id="" cols="30" rows="1" class="w-100 form-control">write a comment</textarea>
+                                </div>
+                                <input type="submit" value="Post" class="btn btn-success float-right start mr-2 mb-4 mt-0">
+                            </form>
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+            {% endfor %}
+        
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
